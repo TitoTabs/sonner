@@ -474,3 +474,23 @@ test.describe('Basic functionality', () => {
     await expect(toast).toHaveCount(0);
   });
 });
+
+test.describe('Forced colors', () => {
+  test('loading spinner stays visible in forced-colors mode', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'forced-colors emulation is only reliable in Chromium');
+
+    await page.emulateMedia({ forcedColors: 'active' });
+    await page.getByTestId('loading-toast-fixed-id').click();
+
+    const bar = page.locator('.sonner-loading-bar').first();
+    await expect(bar).toBeVisible();
+
+    const barBackground = await bar.evaluate((el) => getComputedStyle(el).backgroundColor);
+    const toastBackground = await page
+      .locator('[data-sonner-toast]')
+      .first()
+      .evaluate((el) => getComputedStyle(el).backgroundColor);
+
+    expect(barBackground).not.toBe(toastBackground);
+  });
+});

@@ -714,6 +714,12 @@ html[dir='rtl'],
   }
 }
 
+@media (forced-colors: active) {
+  .sonner-loading-bar {
+    background: CanvasText;
+  }
+}
+
 .sonner-loader {
   position: absolute;
   top: 50%;
